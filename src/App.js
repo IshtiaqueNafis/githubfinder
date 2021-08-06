@@ -1,25 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
+import {Component} from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+import Navbar from "./components/layout/Navbar";
+import Users from "./components/users/Users";
+import axios from "axios";
+
+
+class App extends Component {
+    state = {
+        users: [],
+        loading: false
+    }
+
+
+    async componentDidMount() {
+        //region setting the states
+        this.setState({loading: true})
+
+        //endregion
+
+        const res = await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+        // get is axios so this avoids. then easily.
+        this.setState({users: res.data, loading: false})
+
+
+    }
+
+    render() {
+        return (
+            <div>
+                <Navbar/>
+                <div className="container">
+
+                    <Users loading={this.state.loading} users={this.state.users}/>
+                </div>
+            </div>
+        );
+    }
 }
+
 
 export default App;
