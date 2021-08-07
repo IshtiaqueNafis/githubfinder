@@ -3,10 +3,14 @@ import PropTypes from "prop-types";
 
 class Search extends Component {
 
-
+    //region state text
     state = {
         text: ''
     }
+    //endregion
+
+    //region methods onChange(),onSubmit()
+    //region onChange --> onChange Event will set the text based on the property.
     onChange = (e) => {
         //e is theve event object
         this.setState({[e.target.name]: e.target.value})
@@ -16,13 +20,9 @@ class Search extends Component {
         // works as a computed property/
 
     }
+//endregion
 
-    static propTypes = {
-        searchUsers: PropTypes.func.isRequired, // means thesse are mandtory and must be added
-        clearUsers: PropTypes.func.isRequired,
-        showClear: PropTypes.bool.isRequired,
-        setAlert:PropTypes.func.isRequired,
-    }
+    //region  onSubmit --> this submits the form
     onSubmit = (e) => {
         e.preventDefault();
 
@@ -35,7 +35,9 @@ class Search extends Component {
 
 
     }
+//endregion
 
+    //endregion
     render() {
         const {clearUsers, showClear} = this.props;
         return (
@@ -53,6 +55,14 @@ class Search extends Component {
                 {showClear && <button className="btn btn-light btn-block" onClick={clearUsers}>Clear</button>}
             </div>
         );
+    }
+
+    // this makes the props required.
+    static propTypes = {
+        searchUsers: PropTypes.func.isRequired, // means thesse are mandtory and must be added
+        clearUsers: PropTypes.func.isRequired,
+        showClear: PropTypes.bool.isRequired,
+        setAlert: PropTypes.func.isRequired,
     }
 }
 
