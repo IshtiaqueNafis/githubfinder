@@ -13,29 +13,40 @@ class App extends Component {
         users: [],
         loading: false
     }
-
-
-    async componentDidMount() {
-        //region setting the states
-        this.setState({loading: true})
-
-        //endregion
-
-        const res = await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+    searchUsers = async (text) => {
+        this.setState({loading: true});
+        const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
         // get is axios so this avoids. then easily.
-        this.setState({users: res.data, loading: false})
+        this.setState({users: res.data.items, loading: false}) // its items cause of the search it will cause pagination
+
+    }
+
+    clearUsers = async () => {
+
+        this.setState({users: [], loading: false})
+    }
+
+    componentDidMount() {
+
+
+        // get is axios so this avoids. then easily.
+        this.setState({users: [], loading: false})
 
 
     }
 
+
     render() {
+
+        const {users, loading} = this.state;
+
         return (
             <div>
                 <Navbar/>
-                <Search/>
+                <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={users.length > 0}/>
                 <div className="container">
 
-                    <Users loading={this.state.loading} users={this.state.users}/>
+                    <Users loading={loading} users={users}/>
                 </div>
             </div>
         );
