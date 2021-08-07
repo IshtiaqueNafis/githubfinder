@@ -20,12 +20,20 @@ class Search extends Component {
     static propTypes = {
         searchUsers: PropTypes.func.isRequired, // means thesse are mandtory and must be added
         clearUsers: PropTypes.func.isRequired,
-        showClear:PropTypes.bool.isRequired,
+        showClear: PropTypes.bool.isRequired,
+        setAlert:PropTypes.func.isRequired,
     }
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.searchUsers(this.state.text); // search users is the function
-        this.setState({text: ''}) // after submission set the text to empty
+
+        if (this.state.text === '') {
+            this.props.setAlert("please enter something", "light")
+        } else {
+            this.props.searchUsers(this.state.text); // search users is the function
+            this.setState({text: ''}) // after submission set the text to empty
+        }
+
+
     }
 
     render() {
@@ -42,7 +50,7 @@ class Search extends Component {
 
                     <input type="submit" className="btn btn-dark btn-block"/>
                 </form>
-                {showClear &&   <button className="btn btn-light btn-block" onClick={clearUsers}>Clear</button> }
+                {showClear && <button className="btn btn-light btn-block" onClick={clearUsers}>Clear</button>}
             </div>
         );
     }
