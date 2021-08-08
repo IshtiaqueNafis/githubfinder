@@ -12,7 +12,7 @@ import User from "./components/users/user";
 
 class App extends Component {
 
-    //region state --> users,user,loading,null
+    //region state --> a test
     state = {
         users: [], // will contain all the users object
         repos: [],
