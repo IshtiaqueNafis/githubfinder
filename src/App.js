@@ -9,6 +9,7 @@ import Users from "./components/users/Users";
 import About from "./components/pages/About";
 import User from "./components/users/user";
 
+import GitHubState from "./context/GitHubState";
 
 const App = () => {
     //region state users,repos,user,loading,alert
@@ -88,48 +89,52 @@ const App = () => {
 
 
     return (
-        <Router>
-            <div className="App">
-                <Navbar/>
-                <div className="container">
-                    <Alert alert={alert}/>
-                    <Switch>
-                        {/*switch used for navigation to move from page to page*/}
-                        <Route
-                            exact // this means exact page has to be the same with a slash.
-                            path='/' // this is the homepage
-                            render={props => ( // render means this fragment will be rendered.
-                                <Fragment>
-                                    <Search
-                                        searchUsers={searchUsers}  // the function that returns an array of users based on search
-                                        clearUsers={clearUsers} //function resets everything thing
-                                        showClear={users.length > 0}
-                                        setAlert={showAlert}/>
+        <GitHubState>
 
-                                    <Users loading={loading} users={users}/>
-                                </Fragment>
-                            )}
 
-                        />
-                        <Route exact path='/about' component={About}/>
-                        <Route
-                            exact path='/users/:login' // wo;; require user/:login
-                            render={props => {
-                                //render used for rendering items.
-                                return ( //
-                                    <User {...props}
-                                          getUser={getUser} // this gets the user
-                                          getUserRepos={getUserRepos} // this repos from the users.
-                                          user={user} // pass the user object.
-                                          repos={repos} // pass the repos
-                                          loading={loading}/> // object destrucring is being done here to pass extra props
-                                );
-                            }}/>
-                    </Switch>
+            <Router>
+                <div className="App">
+                    <Navbar/>
+                    <div className="container">
+                        <Alert alert={alert}/>
+                        <Switch>
+                            {/*switch used for navigation to move from page to page*/}
+                            <Route
+                                exact // this means exact page has to be the same with a slash.
+                                path='/' // this is the homepage
+                                render={props => ( // render means this fragment will be rendered.
+                                    <Fragment>
+                                        <Search
+                                            searchUsers={searchUsers}  // the function that returns an array of users based on search
+                                            clearUsers={clearUsers} //function resets everything thing
+                                            showClear={users.length > 0}
+                                            setAlert={showAlert}/>
 
+                                        <Users loading={loading} users={users}/>
+                                    </Fragment>
+                                )}
+
+                            />
+                            <Route exact path='/about' component={About}/>
+                            <Route
+                                exact path='/users/:login' // wo;; require user/:login
+                                render={props => {
+                                    //render used for rendering items.
+                                    return ( //
+                                        <User {...props}
+                                              getUser={getUser} // this gets the user
+                                              getUserRepos={getUserRepos} // this repos from the users.
+                                              user={user} // pass the user object.
+                                              repos={repos} // pass the repos
+                                              loading={loading}/> // object destrucring is being done here to pass extra props
+                                    );
+                                }}/>
+                        </Switch>
+
+                    </div>
                 </div>
-            </div>
-        </Router>
+            </Router>
+        </GitHubState>
     );
 
 };
