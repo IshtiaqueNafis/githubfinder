@@ -1,12 +1,12 @@
 import './App.css';
-import React, {Fragment} from "react";
+import React from "react";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Navbar from "./components/layout/Navbar";
-import Search from "./components/users/search";
 import Alert from "./components/layout/alert";
-import Users from "./components/users/Users";
 import About from "./components/pages/About";
 import User from "./components/users/user";
+import Home from "./components/pages/home";
+import Notfound from "./components/pages/notfound";
 
 import GitHubState from "./context/github/GitHubState";
 import AlertState from "./context/alert/AlertState";
@@ -24,19 +24,10 @@ const App = () => {
                             <Alert/>
                             <Switch>
                                 {/*switch used for navigation to move from page to page*/}
-                                <Route
-                                    exact // this means exact page has to be the same with a slash.
-                                    path='/' // this is the homepage
-                                    render={props => ( // render means this fragment will be rendered.
-                                        <Fragment>
-                                            <Search/>
-                                            <Users/>
-                                        </Fragment>
-                                    )}
-
-                                />
+                                <Route exact path='/' component={Home}/>
                                 <Route exact path='/about' component={About}/>
                                 <Route exact path='/users/:login' component={User}/>
+                                <Route  component={Notfound}/>
                             </Switch>
 
                         </div>
