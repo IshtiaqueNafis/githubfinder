@@ -2,7 +2,7 @@ import {useReducer} from "react";
 import axios from "axios"
 import GithubContext from "./githubContext";
 import GithubReducer from "./githubReducer";
-import {CLEAR_USERS, GET_USER, SEARCH_USERS, SET_LOADING} from "../types";
+import {CLEAR_USERS, GET_REPOS, GET_USER, SEARCH_USERS, SET_LOADING} from "../types";
 
 const GitHubState = props => {
     //region globalState --> holds all the state needed for github applocation has users,user,repos and loading
@@ -45,7 +45,7 @@ const GitHubState = props => {
     }
     //endregion
 
-    //get user
+
     //region    getUser = async (username)  -->get a single github user
     const getUser = async (username) => {
         setLoading();
@@ -69,6 +69,24 @@ const GitHubState = props => {
     const clearUsers = () => dispatch({type: CLEAR_USERS}) // will be passed on gitHubreducer to set loading to true or false.
     // type is the object for the user.
 
+    //region getUsersRepos() --> get repo of the users
+    const getUserRepos = async username => {
+        setLoading();
+        const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+        //region await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+        //{username}/repos?per_page=5&sort=created:as -->repos this gets the repo item.
+        //per_page=5 --> get 5 pages from the item
+        // sort=created:as sort is created based om ascedinmg order.
+        //endregion
+       dispatch({
+           type: GET_REPOS,
+           payload:res.data
+       })
+    }
+
+    //endregion
+
+
     return <GithubContext.Provider value={
         // this will make the whole app have acess to value items.
         //
@@ -79,7 +97,8 @@ const GitHubState = props => {
             loading: state.loading,
             searchUsers,
             clearUsers,
-            getUser
+            getUser,
+            getUserRepos
 
         }}>
         {props.children}

@@ -1,7 +1,6 @@
 import './App.css';
 import React, {Fragment, useState} from "react";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
-import axios from "axios";
 import Navbar from "./components/layout/Navbar";
 import Search from "./components/users/search";
 import Alert from "./components/layout/alert";
@@ -14,15 +13,10 @@ import GitHubState from "./context/GitHubState";
 const App = () => {
     //region state users,repos,user,loading,alert
 
-    const [repos, setRepos] = useState([]); // grab repo for the single selected user.
-    const [loading, setLoading] = useState(false); // loading cursor ? loading scroll:loading scroll loading
     const [alert, setAlert] = useState(null); // alert? show error message : no error messae.
 //endregion
 
     //region  methods  searchUsers (), clearUsers,setAlert,componentDidMount() ,getUserRepos();
-
-
-
 
 
     //region   setAlert() --> setalert state if a useres typed an error message.
@@ -30,24 +24,6 @@ const App = () => {
         setAlert({msg, type});
         setTimeout(() => setAlert(null), 5000)
     };
-
-    //endregion
-
-
-
-
-    //region getUsersRepos() --> get repo of the users
-    const getUserRepos = async username => {
-        setLoading(true);
-        const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
-        //region await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
-        //{username}/repos?per_page=5&sort=created:as -->repos this gets the repo item.
-        //per_page=5 --> get 5 pages from the item
-        // sort=created:as sort is created based om ascedinmg order.
-        //endregion
-        setRepos(res.data);
-        setLoading(false);
-    }
 
     //endregion
 
@@ -75,25 +51,13 @@ const App = () => {
 
                                             setAlert={showAlert}/>
 
-                                        <Users />
+                                        <Users/>
                                     </Fragment>
                                 )}
 
                             />
                             <Route exact path='/about' component={About}/>
-                            <Route
-                                exact path='/users/:login' // wo;; require user/:login
-                                render={props => {
-                                    //render used for rendering items.
-                                    return ( //
-                                        <User {...props}
-
-                                              getUserRepos={getUserRepos} // this repos from the users.
-
-                                              repos={repos} // pass the repos
-                                              /> // object destrucring is being done here to pass extra props
-                                    );
-                                }}/>
+                            <Route exact path='/users/:login' component={User}/>
                         </Switch>
 
                     </div>
