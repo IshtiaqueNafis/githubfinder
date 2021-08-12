@@ -1,5 +1,5 @@
 import {createContext} from "react";
 
-const githubContext = createContext();
+const GithubContext = createContext(); // this creates the context for the application where all the data will go through.
 
-export default githubContext;
+export default GithubContext;

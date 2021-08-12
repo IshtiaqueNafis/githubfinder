@@ -1,14 +1,17 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {Fragment, useContext, useEffect} from 'react';
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom"
 import Spinner from "../spinner";
 import Repos from "../repos/repos";
+import GithubContext from "../../context/githubContext";
 
-const User = ({user, repos, match, loading, getUser, getUserRepos}) => {
+const User = ({ repos, match,getUserRepos}) => {
     // all theese are coming from user object
 
+    const githubContext =useContext(GithubContext)
+const {getUser,loading,user} =githubContext
     useEffect(() => {
-        getUser(match.params.login); // gets list of user based search
+       getUser(match.params.login); // gets list of user based search
         getUserRepos(match.params.login); // gets userrepo based on search.
 
         //eslint-disable-next-line
@@ -90,11 +93,9 @@ const User = ({user, repos, match, loading, getUser, getUserRepos}) => {
 
 }
 User.propTypes = {
-    user: PropTypes.object.isRequired,
+
     repos: PropTypes.array.isRequired,
-    loading: PropTypes.bool,
-    getUser: PropTypes.func.isRequired,
-    getUserRepos: PropTypes.func.isRequired
+
 
 
 }
