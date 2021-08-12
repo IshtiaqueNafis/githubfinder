@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
-import PropTypes from "prop-types";
 import GithubContext from "../../context/githubContext";
+import AlertContext from "../../context/alert/AlertContext";
 
 const Search = () => {
-const githubContext = useContext(GithubContext)
+    const githubContext = useContext(GithubContext)
+    const alertContext = useContext(AlertContext)
 
-   const {setAlert} = githubContext;
     //region function state [text, setText]
     const [text, setText] = useState('')
     //endregion
@@ -22,10 +22,10 @@ const githubContext = useContext(GithubContext)
 
 
         if (text === '') {
-            setAlert("please enter something", "light")
+            alertContext.setAlert("please enter something", "light")
 
         } else {
-         githubContext.searchUsers(text); // search users is the function
+            githubContext.searchUsers(text); // search users is the function
             setText('');
         }
 //endregion
@@ -48,7 +48,8 @@ const githubContext = useContext(GithubContext)
 
                 <input type="submit" className="btn btn-dark btn-block"/>
             </form>
-            {githubContext.users.length>0 && <button className="btn btn-light btn-block" onClick={githubContext.clearUsers}>Clear</button>}
+            {githubContext.users.length > 0 &&
+            <button className="btn btn-light btn-block" onClick={githubContext.clearUsers}>Clear</button>}
             {/*this shows the users based on  users if it shows an item was more than one clear message will be shown */}
         </div>
     );
@@ -56,9 +57,5 @@ const githubContext = useContext(GithubContext)
 
 }
 
-Search.propTypes = {
-
-    setAlert: PropTypes.func.isRequired,
-}
 
 export default Search;

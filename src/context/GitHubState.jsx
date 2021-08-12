@@ -4,6 +4,7 @@ import GithubContext from "./githubContext";
 import GithubReducer from "./githubReducer";
 import {CLEAR_USERS, GET_REPOS, GET_USER, SEARCH_USERS, SET_LOADING} from "../types";
 
+
 const GitHubState = props => {
     //region globalState --> holds all the state needed for github applocation has users,user,repos and loading
     const initialState = {
