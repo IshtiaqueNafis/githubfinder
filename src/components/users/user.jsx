@@ -2,20 +2,24 @@ import React, {Fragment, useContext, useEffect} from 'react';
 import {Link} from "react-router-dom"
 import Spinner from "../spinner";
 import Repos from "../repos/repos";
-import GithubContext from "../../context/githubContext";
+import GithubContext from "../../context/github/githubContext";
 
 const User = ({match}) => {
-    // all theese are coming from user object
+    //match is the prop for the user.
 
     const githubContext = useContext(GithubContext)
-    const {getUser, loading, user, getUserRepos, repos} = githubContext
+    const {getUser, getUserRepos, loading, user, repos} = githubContext
+    //region
+    // getUser --> getsUser object
+    // getUserRepos--> getRepos for the user
+    //endregion
     useEffect(() => {
         getUser(match.params.login); // gets list of user based search
         getUserRepos(match.params.login); // gets userrepo based on search.
 
         //eslint-disable-next-line
     }, [])
-
+ // sets the User object and repo from here.
 
     const {
         name,

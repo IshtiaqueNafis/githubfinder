@@ -2,30 +2,31 @@ import {useReducer} from "react";
 import axios from "axios"
 import GithubContext from "./githubContext";
 import GithubReducer from "./githubReducer";
-import {CLEAR_USERS, GET_REPOS, GET_USER, SEARCH_USERS, SET_LOADING} from "../types";
+import {CLEAR_USERS, GET_REPOS, GET_USER, SEARCH_USERS, SET_LOADING} from "../../types";
 
 
 const GitHubState = props => {
-    //region globalState --> holds all the state needed for github applocation has users,user,repos and loading
+    //region state --> Users[],user{}.repos:[],loading:bool
     const initialState = {
-
-        users: [],
-        user: {},
-        repos: [],
-        loading: false
+        users: [], // --> this will get the users array from the server
+        user: {}, // --> this will show the user object based on details.
+        repos: [], //--> this will show all the reps from the user.
+        loading: false // --> set for loading screen.
     }
-//endregion
+    //endregion
+
     //region setting up reducer.
     const [state, dispatch] = useReducer(GithubReducer, initialState)
-    // state will hold all the property for GithubReducer which will hold users,user,reps and loading
-    // dispatch --> is the function which includes the arugment to what action to take when the program will load.
+    //GithubReducer --> this will handle all the requenest
+    // initialState --> initalState is the state being passed here to get the properties for the state
 
     //endregion
 
-    //region  search users and fetches data
+    //region methods searchUsers(), getUser (),setLoading(),clearUsers(),getUserRepos()
+    //region  searchUsers(text) ==> get array based on what userTypes.
 
     const searchUsers = async text => {
-        setLoading();
+        setLoading();  //--> set loading to true to show the loading page.
         const res = await axios.get(
             `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
         //region code explanation
@@ -38,8 +39,9 @@ const GitHubState = props => {
 
         //endregion
         dispatch({
-            type: SEARCH_USERS, // type means it will search through tiems
-            payload: res.data.items // what will it search through.
+            // will create two object with the following properties.
+            type: SEARCH_USERS, // This is a constant value which will be used to apply for the users.
+            payload: res.data.items // what will it search through items for the user.
         })
 
 
@@ -49,10 +51,11 @@ const GitHubState = props => {
 
     //region    getUser = async (username)  -->get a single github user
     const getUser = async (username) => {
-        setLoading();
+        setLoading(); //--> set loading to true to show the loading page.
         const res = await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
         // get is axios so this avoids. then easily.
         dispatch({
+            // will create two object with the following properties.
                 type: GET_USER,
                 payload: res.data
             }
@@ -65,14 +68,17 @@ const GitHubState = props => {
 
     //endregion
 
-    // set loading --> set loading to true or false.
+   //region set loading --> set loading to true to show the login items.
     const setLoading = () => dispatch({type: SET_LOADING}) // will be passed on gitHubreducer to set loading to true or false.
+    //endregion
+
+    //region clearUsers --> clears the search result
     const clearUsers = () => dispatch({type: CLEAR_USERS}) // will be passed on gitHubreducer to set loading to true or false.
-    // type is the object for the user.
+    //endregion
 
     //region getUsersRepos() --> get repo of the users
     const getUserRepos = async username => {
-        setLoading();
+        setLoading(); // set to true.
         const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
         //region await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
         //{username}/repos?per_page=5&sort=created:as -->repos this gets the repo item.
@@ -81,16 +87,16 @@ const GitHubState = props => {
         //endregion
        dispatch({
            type: GET_REPOS,
-           payload:res.data
+           payload:res.data // get the single user data.
        })
     }
 
     //endregion
-
+//endregion
 
     return <GithubContext.Provider value={
-        // this will make the whole app have acess to value items.
-        //
+       // value is used to pass the context to the user.
+       // create obhects here and pass them here.
         {
             users: state.users,
             user: state.user,

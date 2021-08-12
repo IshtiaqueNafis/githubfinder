@@ -8,7 +8,7 @@ import Users from "./components/users/Users";
 import About from "./components/pages/About";
 import User from "./components/users/user";
 
-import GitHubState from "./context/GitHubState";
+import GitHubState from "./context/github/GitHubState";
 import AlertState from "./context/alert/AlertState";
 
 const App = () => {

@@ -1,13 +1,13 @@
-import {CLEAR_USERS, GET_REPOS, GET_USER, SEARCH_USERS, SET_LOADING,} from "../types";
+import {CLEAR_USERS, GET_REPOS, GET_USER, SEARCH_USERS, SET_LOADING,} from "../../types";
 
 const GithubReducer = (state, action) => {
     // state will be for updating the state.
     // actgion will hold the actions GithubRedurcer will do.
     switch (action.type) {
-        // action.type will be passed to decide what action will be taken.
+        // action.type is the arugment being passed
         case SEARCH_USERS:
             return {
-                ...state,
+                ...state, // state will be recomiled
                 users: action.payload, // gets all the users from the github api
                 loading: false
             }

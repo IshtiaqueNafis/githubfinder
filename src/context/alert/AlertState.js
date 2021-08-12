@@ -8,7 +8,8 @@ const AlertState = props => {
     const initialState = null; // set the whole thing to null as only one thing is nedded.
 
 
-//endregion
+    //endregion
+
     //region setting up reducer.
     const [state, dispatch] = useReducer(AlertReducer, initialState)
     // state will hold all the property for GithubReducer which will hold users,user,reps and loading
@@ -16,16 +17,15 @@ const AlertState = props => {
 
     //endregion
 
-    //region  search users and fetches data
-
+    //region  setAlert() --> sets alert value
     const setAlert = (msg, type) => {
         dispatch({
             type: SET_ALERT,
             payload: {msg, type}
         })
-      setTimeout(()=>dispatch({type:REMOVE_ALERT}),5000)
+        setTimeout(() => dispatch({type: REMOVE_ALERT}), 5000)
     };
-
+//endregion
     return <AlertContext.Provider value={
         // this will make the whole app have acess to value items.
         //
