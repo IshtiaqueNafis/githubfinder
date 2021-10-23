@@ -7,7 +7,6 @@ import About from "./components/pages/About";
 import User from "./components/users/user";
 import Home from "./components/pages/home";
 import Notfound from "./components/pages/notfound";
-
 import GitHubState from "./context/github/GitHubState";
 import AlertState from "./context/alert/AlertState";
 
